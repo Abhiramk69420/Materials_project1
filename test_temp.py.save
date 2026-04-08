@@ -1,0 +1,9 @@
+from w1thermsensor import  W1ThermSensor
+import time
+
+sensor = W1ThermSensor()
+
+while True:
+	temp = sensor.get_temperature()
+	print(f"Temp:  {temp:.2f} C")
+	time.sleep(2)
