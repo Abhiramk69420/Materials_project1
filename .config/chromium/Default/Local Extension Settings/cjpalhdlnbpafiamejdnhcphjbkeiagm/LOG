@@ -1,0 +1,37 @@
+2024/11/23-22:13:12.523 cdd Reusing MANIFEST /home/abhiramk/.config/chromium/Default/Local Extension Settings/cjpalhdlnbpafiamejdnhcphjbkeiagm/MANIFEST-000001
+2024/11/23-22:13:12.524 cdd Recovering log #10
+2024/11/23-22:13:12.524 cdd Reusing old log /home/abhiramk/.config/chromium/Default/Local Extension Settings/cjpalhdlnbpafiamejdnhcphjbkeiagm/000010.log 
+2024/11/23-22:14:47.183 cdd Level-0 table #14: started
+2024/11/23-22:14:47.361 cdd Level-0 table #14: 4271116 bytes OK
+2024/11/23-22:14:47.369 cdd Delete type=0 #10
+2024/11/23-22:14:51.084 cdd Level-0 table #16: started
+2024/11/23-22:14:51.204 cdd Level-0 table #16: 4473619 bytes OK
+2024/11/23-22:14:51.209 cdd Delete type=0 #13
+2024/11/23-22:14:51.210 cdd Compacting 4@0 + 1@1 files
+2024/11/23-22:14:51.309 cdd Generated table #17@0: 6 keys, 2402410 bytes
+2024/11/23-22:14:51.374 cdd Generated table #18@0: 8 keys, 2711712 bytes
+2024/11/23-22:14:51.474 cdd Generated table #19@0: 3 keys, 2394084 bytes
+2024/11/23-22:14:51.601 cdd Generated table #20@0: 2 keys, 4473619 bytes
+2024/11/23-22:14:51.628 cdd Generated table #21@0: 7 keys, 1115548 bytes
+2024/11/23-22:14:51.628 cdd Compacted 4@0 + 1@1 files => 13097373 bytes
+2024/11/23-22:14:51.632 cdd compacted to: files[ 0 5 1 0 0 0 0 ]
+2024/11/23-22:14:51.632 cdd Delete type=2 #11
+2024/11/23-22:14:51.632 cdd Delete type=2 #7
+2024/11/23-22:14:51.632 cdd Delete type=2 #16
+2024/11/23-22:14:51.633 cdd Delete type=2 #14
+2024/11/23-22:14:51.633 cdd Delete type=2 #9
+2024/11/23-22:14:51.634 cdd Expanding@1 1+1 (2402410+4348877 bytes) to 5+1 (13097373+4348877 bytes)
+2024/11/23-22:14:51.634 cdd Compacting 5@1 + 1@2 files
+2024/11/23-22:14:51.693 cdd Generated table #22@1: 6 keys, 2402410 bytes
+2024/11/23-22:14:51.757 cdd Generated table #23@1: 8 keys, 2711712 bytes
+2024/11/23-22:14:51.821 cdd Generated table #24@1: 6 keys, 2784796 bytes
+2024/11/23-22:14:51.965 cdd Generated table #25@1: 2 keys, 4473619 bytes
+2024/11/23-22:14:51.993 cdd Generated table #26@1: 14 keys, 1117561 bytes
+2024/11/23-22:14:51.993 cdd Compacted 5@1 + 1@2 files => 13490098 bytes
+2024/11/23-22:14:51.997 cdd compacted to: files[ 0 0 5 0 0 0 0 ]
+2024/11/23-22:14:51.997 cdd Delete type=2 #20
+2024/11/23-22:14:51.997 cdd Delete type=2 #19
+2024/11/23-22:14:51.997 cdd Delete type=2 #5
+2024/11/23-22:14:51.998 cdd Delete type=2 #18
+2024/11/23-22:14:51.998 cdd Delete type=2 #21
+2024/11/23-22:14:51.998 cdd Delete type=2 #17

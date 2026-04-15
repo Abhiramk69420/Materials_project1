@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
+  <bookmark href="file:///home/abhiramk/materials_project/graph.png" added="2026-02-17T06:34:57.540676Z" modified="2026-04-02T04:27:54.477249Z" visited="2026-02-17T06:34:57.540677Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="image/png"/>
+        <bookmark:groups>
+          <bookmark:group>Graphics</bookmark:group>
+        </bookmark:groups>
+        <bookmark:applications>
+          <bookmark:application name="Eye of MATE Image Viewer" exec="&apos;eom %u&apos;" modified="2026-04-02T04:27:54.477243Z" count="5"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="file:///home/abhiramk/materials_project/comparison.png" added="2026-02-17T18:52:12.781547Z" modified="2026-02-18T02:04:08.878065Z" visited="2026-02-17T18:52:12.781550Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="image/png"/>
+        <bookmark:groups>
+          <bookmark:group>Graphics</bookmark:group>
+        </bookmark:groups>
+        <bookmark:applications>
+          <bookmark:application name="Eye of MATE Image Viewer" exec="&apos;eom %u&apos;" modified="2026-02-18T02:04:08.878062Z" count="4"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+</xbel>
