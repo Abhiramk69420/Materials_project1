@@ -1,1 +1,4 @@
 .config/
+.cache/
+.local/
+*.ldb
