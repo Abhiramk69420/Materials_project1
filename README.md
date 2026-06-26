@@ -1,4 +1,4 @@
-# Materials Science Project
+# Temperature/Heat Analysis of Materials Project
 
 ## Overview
 
