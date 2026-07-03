@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 
-material = input("Enter material name: ")
-filename = f"{material}_data.csv"
+material = input("Enter material name: ").lower()
+filename = f"experimental_data/{material}_trial1.csv"
 
 data = pd.read_csv(filename)
 
