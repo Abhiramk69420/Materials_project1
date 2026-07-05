@@ -3,7 +3,7 @@ import glob
 
 material = input('Enter material name: ').lower()
 
-files = glob.glob(f'data/{material}_trial*.csv')
+files = glob.glob(f'sample_data/{material}_trial*.csv')
 
 if len(files) == 0:
     print('No trial files found.')
@@ -16,13 +16,13 @@ for file in files:
 
     df = pd.read_csv(file)
 
-    initial_temp = df['Temperature'].iloc[0]
-    final_temp = df['Temperature'].iloc[-1]
+    initial_temp = df['Temp_F'].iloc[0]
+    final_temp = df['Temp_F'].iloc[-1]
 
-    initial_time = df['Time'].iloc[0]
-    final_time = df['Time'].iloc[-1]
+    initial_time = df['Time_s'].iloc[0]
+    final_time = df['Time_s'].iloc[-1]
 
-    max_temp = df['Temperature'].max()
+    max_temp = df['Temp_F'].max()
 
     time_minutes = (final_time - initial_time) / 60
 
