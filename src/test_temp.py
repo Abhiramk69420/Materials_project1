@@ -7,12 +7,14 @@ sensor = W1ThermSensor()
 
 material = input("Enter material name: ").lower()
 
-existing_trials = glob.glob(f"sample_data/{material}_trial*.csv")
+existing_trials = glob.glob(f"official_data/{material}_trial*.csv")
 print(existing_trials)
+
 print(len(existing_trials))
+
 trial_num = len(existing_trials) + 1
 
-filename = f"sample_data/{material}_trial{trial_num}.csv"
+filename = f"official_data/{material}_trial{trial_num}.csv"
 
 print(f"Saving data to {filename}")
 

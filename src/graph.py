@@ -4,7 +4,7 @@ import glob
 
 material = input("Enter material name: ").lower()
 
-files = sorted(glob.glob(f"sample_data/{material}_trial*.csv"))
+files = sorted(glob.glob(f"official_graphs/{material}_trial*.csv"))
 
 if len(files) == 0:
     print("No trial files found.")
@@ -32,7 +32,7 @@ plt.title(f"{material.capitalize()} Average Cooling Curve")
 plt.grid(True)
 plt.legend()
 
-plt.savefig(f"sample_graphs/{material}_average_graph.png")
-print(f"Graph saved as sample_graphs/{material}_average_graph.png")
+plt.savefig(f"official_graphs/{material}_average_graph.png")
+print(f"Graph saved as official_graphs/{material}_average_graph.png")
 
 plt.show()
