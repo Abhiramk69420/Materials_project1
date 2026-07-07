@@ -4,7 +4,7 @@ import glob
 
 material = input("Enter material name: ").lower()
 
-files = sorted(glob.glob(f"official_graphs/{material}_trial*.csv"))
+files = sorted(glob.glob(f"official_data/{material}_trial*.csv"))
 
 if len(files) == 0:
     print("No trial files found.")
@@ -14,7 +14,16 @@ if len(files) == 0:
 dataframes = [pd.read_csv(file) for file in files]
 
 # Use the time column from the first trial
-time = dataframes[0]["Time_s"]
+min_len = min(len(df) for df in dataframes)
+
+time = dataframes[0]["Time_s"].iloc[:min_len].reset_index(drop=True)
+
+temps = pd.concat(
+    [df["Temp_F"].iloc[:min_len].reset_index(drop=True) for df in dataframes],
+    axis=1
+)
+
+avg_temp = temps.mean(axis=1)
 
 # Combine all temperature columns
 temps = pd.concat([df["Temp_F"] for df in dataframes], axis=1)
