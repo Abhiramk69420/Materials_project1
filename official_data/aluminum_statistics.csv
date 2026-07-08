@@ -1,0 +1,2 @@
+Material,Trials,Average_Max_Temp_F,Max_Temp_StdDev,Average_Heating_Rate_F_per_min,Heating_Rate_StdDev,Heating_Rate_SE,Heating_Rate_95CI
+Aluminum,3,78.19666666666666,0.23459184413216583,0.0827067669172928,0.14325232243050792,0.08270676691729281,0.16210526315789392
