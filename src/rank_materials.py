@@ -1,46 +1,97 @@
-import pandas as pd
+import os
 import glob
+import pandas as pd
+import numpy as np
+
+DATA_FOLDER = "official_data"
+
+print("\nFinding materials...")
+
+# -----------------------------------
+# Automatically find every material
+# -----------------------------------
+
+materials = sorted(set(
+    os.path.basename(file).split("_trial")[0]
+    for file in glob.glob(os.path.join(DATA_FOLDER, "*_trial*.csv"))
+))
+
+if len(materials) == 0:
+    print("No trial files found.")
+    exit()
 
 results = []
 
-files = glob.glob('data/*_average.csv')
+# -----------------------------------
+# Process each material
+# -----------------------------------
 
-for file in files:
-    df = pd.read_csv(file)
+for material in materials:
 
-    material = file.split('/')[-1].replace('_average.csv', '')
+    files = sorted(
+        glob.glob(
+            os.path.join(DATA_FOLDER,
+            f"{material}_trial*.csv")
+        )
+    )
 
-    max_temp = df['MaxTemp'].iloc[0]
-    heating_rate = df['HeatingRate'].iloc[0]
+    max_temps = []
+    heating_rates = []
+
+    for file in files:
+
+        df = pd.read_csv(file)
+
+        start_temp = df["Temp_F"].iloc[0]
+        end_temp = df["Temp_F"].iloc[-1]
+        total_time = df["Time_s"].iloc[-1]
+
+        max_temps.append(df["Temp_F"].max())
+
+        rate = (end_temp - start_temp) / (total_time / 60)
+        heating_rates.append(rate)
+
+    avg_max = np.mean(max_temps)
+    avg_rate = np.mean(heating_rates)
+
+    std_rate = np.std(heating_rates, ddof=1) if len(heating_rates) > 1 else 0
+
+    score = (0.30 * avg_max) + (0.70 * avg_rate)
 
     results.append({
-        'Material': material.capitalize(),
-        'HeatingRate': heating_rate,
-        'MaxTemp': max_temp
+        "Material": material.capitalize(),
+        "Trials": len(files),
+        "Average Max Temp (°F)": round(avg_max,2),
+        "Average Heating Rate (°F/min)": round(avg_rate,2),
+        "Heating Rate Std Dev": round(std_rate,2),
+        "Score": round(score,2)
     })
 
-rankings = pd.DataFrame(results)
+# -----------------------------------
+# Create ranking
+# -----------------------------------
 
-rankings['HeatingScore'] = (
-    rankings['HeatingRate'] /
-    rankings['HeatingRate'].max()
-)
+ranking = pd.DataFrame(results)
 
-rankings['TemperatureScore'] = (
-    rankings['MaxTemp'] /
-    rankings['MaxTemp'].max()
-)
-
-rankings['OverallScore'] = (
-    0.7 * rankings['HeatingScore'] +
-    0.3 * rankings['TemperatureScore']
-)
-
-rankings = rankings.sort_values(
-    by='OverallScore',
+ranking = ranking.sort_values(
+    by="Score",
     ascending=False
+).reset_index(drop=True)
+
+ranking.index += 1
+
+print("\n===== MATERIAL RANKINGS =====\n")
+print(ranking)
+
+# -----------------------------------
+# Save results
+# -----------------------------------
+
+save_path = os.path.join(
+    DATA_FOLDER,
+    "material_rankings.csv"
 )
 
+ranking.to_csv(save_path)
 
-rankings = rankings.reset_index(drop=True)
-print(rankings[['Material', 'MaxTemp', 'HeatingRate', 'OverallScore']])
+print(f"\nRankings saved to:\n{save_path}")

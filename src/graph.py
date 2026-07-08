@@ -1,47 +1,87 @@
+import os
+import glob
 import pandas as pd
 import matplotlib.pyplot as plt
-import glob
 
-material = input("Enter material name: ").lower()
+DATA_FOLDER = "official_data"
+GRAPH_FOLDER = "official_graphs"
 
-files = sorted(glob.glob(f"official_data/{material}_trial*.csv"))
+os.makedirs(GRAPH_FOLDER, exist_ok=True)
+
+material = input("Enter material name: ").strip().lower()
+
+files = sorted(glob.glob(
+    os.path.join(DATA_FOLDER, f"{material}_trial*.csv")
+))
 
 if len(files) == 0:
-    print("No trial files found.")
+    print(f"\nNo trial files found for '{material}'.")
     exit()
 
+print(f"\nFound {len(files)} trial(s).")
+
+# --------------------------
 # Read all trial files
+# --------------------------
+
 dataframes = [pd.read_csv(file) for file in files]
 
-# Use the time column from the first trial
+# --------------------------
+# Trim to shortest trial
+# --------------------------
+
 min_len = min(len(df) for df in dataframes)
 
-time = dataframes[0]["Time_s"].iloc[:min_len].reset_index(drop=True)
+trimmed = [
+    df.iloc[:min_len].reset_index(drop=True)
+    for df in dataframes
+]
+
+time = trimmed[0]["Time_s"]
 
 temps = pd.concat(
-    [df["Temp_F"].iloc[:min_len].reset_index(drop=True) for df in dataframes],
+    [df["Temp_F"] for df in trimmed],
     axis=1
 )
 
 avg_temp = temps.mean(axis=1)
+std_temp = temps.std(axis=1)
 
-# Combine all temperature columns
-temps = pd.concat([df["Temp_F"] for df in dataframes], axis=1)
+# --------------------------
+# Plot
+# --------------------------
 
-# Calculate average temperature
-avg_temp = temps.mean(axis=1)
-
-# Plot average curve
 plt.figure(figsize=(8,5))
-plt.plot(time, avg_temp, linewidth=2, label="Average Temperature")
 
+plt.plot(
+    time,
+    avg_temp,
+    color="blue",
+    linewidth=2,
+    label="Average Temperature"
+)
+
+plt.fill_between(
+    time,
+    avg_temp - std_temp,
+    avg_temp + std_temp,
+    alpha=0.2,
+    label="±1 SD"
+)
+
+plt.title(f"{material.capitalize()} Temperature Curve")
 plt.xlabel("Time (seconds)")
 plt.ylabel("Temperature (°F)")
-plt.title(f"{material.capitalize()} Average Cooling Curve")
 plt.grid(True)
 plt.legend()
 
-plt.savefig(f"official_graphs/{material}_average_graph.png")
-print(f"Graph saved as official_graphs/{material}_average_graph.png")
+save_path = os.path.join(
+    GRAPH_FOLDER,
+    f"{material}_average_graph.png"
+)
+
+plt.savefig(save_path, dpi=300)
+
+print(f"\nGraph saved to:\n{save_path}")
 
 plt.show()

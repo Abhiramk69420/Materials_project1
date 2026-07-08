@@ -1,56 +1,140 @@
-import matplotlib
-matplotlib.use("Agg")
-
+import os
+import os
+import glob
 import pandas as pd
 import matplotlib.pyplot as plt
-import glob
 
-materials = input("Enter materials (example: aluminum,plastic,wood): ")
-materials = materials.split(",")
+DATA_FOLDER = "official_data"
+GRAPH_FOLDER = "official_graphs"
 
-plt.figure(figsize=(8,5))
+os.makedirs(GRAPH_FOLDER, exist_ok=True)
 
-print("\n===== Cooling Rate Results =====")
+materials = input(
+    "Enter materials separated by commas (example: aluminum,plastic,wood): "
+)
 
-for m in materials:
-    name = m.strip().lower()
+materials = [m.strip().lower() for m in materials.split(",")]
 
-    # Find all trial files
-    files = sorted(glob.glob(f"sample_data/{name}_trial*.csv"))
+plt.figure(figsize=(10,6))
+
+for material in materials:
+
+    files = sorted(
+        glob.glob(
+            os.path.join(DATA_FOLDER, f"{material}_trial*.csv")
+        )
+    )
 
     if len(files) == 0:
-        print(f"No trial files found for {name}")
+        print(f"No data found for {material}.")
         continue
 
-    # Read all trials
+    # ------------------------
+    # Read every trial
+    # ------------------------
+
     dataframes = [pd.read_csv(file) for file in files]
 
-    # Use the time values from the first trial
-    time = dataframes[0]["Time_s"]
+    # ------------------------
+    # Trim all trials to shortest length
+    # ------------------------
 
-    # Average the temperatures
-    temps = pd.concat([df["Temp_F"] for df in dataframes], axis=1)
+    min_len = min(len(df) for df in dataframes)
+
+    trimmed = [
+        df.iloc[:min_len].reset_index(drop=True)
+        for df in dataframes
+    ]
+
+    time = trimmed[0]["Time_s"]
+
+    temps = pd.concat(
+        [df["Temp_F"] for df in trimmed],
+        axis=1
+    )
+
+    # ------------------------
+    # Average + Standard Deviation
+    # ------------------------
+
     avg_temp = temps.mean(axis=1)
+    std_temp = temps.std(axis=1)
 
-    # Plot average curve
-    plt.plot(time, avg_temp, linewidth=2, label=name.capitalize())
+    # ------------------------
+    # Normalize
+    # ------------------------
 
-    # Calculate average cooling rate
-    start_temp = avg_temp.iloc[0]
-    end_temp = avg_temp.iloc[-1]
-    total_time = time.iloc[-1]
+    min_temp = avg_temp.min()
+    max_temp = avg_temp.max()
 
-    rate = (start_temp - end_temp) / (total_time / 60)
+    if max_temp != min_temp:
+        avg_temp = (avg_temp - min_temp) / (max_temp - min_temp)
+        std_temp = std_temp / (max_temp - min_temp)
 
-    print(f"{name.capitalize()}: {rate:.2f} °F/min")
+    # ------------------------
+    # Plot Average
+    # ------------------------
 
-plt.xlabel("Time (seconds)")
-plt.ylabel("Temperature (°F)")
-plt.title("Average Cooling Curve Comparison")
-plt.legend()
-plt.grid(True)
+    plt.plot(
+        time,
+        avg_temp,
+        linewidth=2.5,
+        label=material.capitalize()
+    )
 
-plt.savefig("official_graphs/comparison.png")
-print("\nComparison graph saved to official_graphs/comparison.png")
+    # ------------------------
+    # Plot Uncertainty Band
+    # ------------------------
+
+    plt.fill_between(
+        time,
+        avg_temp - std_temp,
+        avg_temp + std_temp,
+        alpha=0.20
+    )
+
+# ------------------------
+# Graph Formatting
+# ------------------------
+
+plt.title(
+    "Comparison of Average Temperature Response",
+    fontsize=16,
+    fontweight="bold"
+)
+
+plt.xlabel(
+    "Time (seconds)",
+    fontsize=12
+)
+
+plt.ylabel(
+    "Normalized Temperature",
+    fontsize=12
+)
+
+plt.grid(
+    True,
+    linestyle="--",
+    alpha=0.5
+)
+
+plt.legend(
+    title="Materials"
+)
+
+plt.tight_layout()
+
+save_path = os.path.join(
+    GRAPH_FOLDER,
+    "comparison_graph.png"
+)
+
+plt.savefig(
+    save_path,
+    dpi=300
+)
+
+print(f"\nComparison graph saved to:\n{save_path}")
 
 plt.show()
